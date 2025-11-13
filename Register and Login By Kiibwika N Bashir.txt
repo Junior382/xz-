@@ -1,0 +1,342 @@
+Create a Registration and Login System with PHP and MySQL
+
+
+How to create a Registration and Login System with PHP and MySQL. Here is the quick solution to build a login system with PHP and MySQL. Nowadays almost every website provides Registration and login functionality. Thus, it is necessary to add a login system in modern web applications.
+
+
+we walk through the complete process of creating a user registration system. Users can create an account by providing username, password, email. After the account was created, the user can log in to their own account. Once the user login, it will redirect to the Dashboard page. Moreover, the user can logout from his panel. This whole system is developed using PHP and MySQL.
+
+
+
+Here are Seven pretty simple steps you have to follow to create a login system.
+
+1. Create a Database and Database Table
+2. Connect to the Database
+3. Session Create for Logged in User
+4. Create a Registration and Login Form
+5. Make a Dashboard Page
+6. Create a Logout (Destroy session)
+7. CSS File Create
+
+
+
+Stept 1. Create a Database and Database Table
+===============================================
+
+First, you have to log in to PHPMyAdmin. Next, click on the Database tab to create a new database. Enter your database name and click on create database button. As soon as PHPMyAdmin will create a new database.
+
+
+CREATE DATABASE LoginSystem;
+
+
+Once you create a database, the second step to creating a user table. The user’s table will have the following fields.
+
+	id – int(11)
+	username  – varchar(100)
+	email  – varchar(100)
+	password  – varchar(100)
+	create_datetime – datetime
+
+
+
+
+CREATE TABLE IF NOT EXISTS `users` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `username` varchar(50) NOT NULL,
+ `email` varchar(50) NOT NULL,
+ `password` varchar(50) NOT NULL,
+ `create_datetime` datetime NOT NULL,
+ PRIMARY KEY (`id`)
+);
+
+
+
+Connect to the Database
+=========================
+
+After creating the table, we have to create a PHP MySQL connector script to connect to the MySQL database server. Create a file named db.php and put the following code inside it.
+
+
+
+db.php
+=====================
+
+
+<?php
+    // Enter your host name, database username, password, and database name.
+    // If you have not set database password on localhost then set empty.
+    $con = mysqli_connect("localhost","root","root","LoginSystem");
+    // Check connection
+    if (mysqli_connect_errno()){
+        echo "Failed to connect to MySQL: " . mysqli_connect_error();
+    }
+?>
+
+
+
+
+Session Create for Logged in User
+=======================================
+
+Next, we have to create a session for the user. Create a file named auth_session.php and paste the codes below.
+
+
+auth_session.php
+===================
+
+<?php
+    session_start();
+    if(!isset($_SESSION["username"])) {
+        header("Location: login.php");
+        exit();
+    }
+?>
+
+
+
+
+
+
+
+
+Creating a Registration Form
+===============================
+
+Furthermore, create PHP file registration.php and paste the following example code in it. This will create an HTML form. It will allow users to register.
+
+registration.php
+========================
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Registration</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<?php
+    require('db.php');
+    // When form submitted, insert values into the database.
+    if (isset($_REQUEST['username'])) {
+        // removes backslashes
+        $username = stripslashes($_REQUEST['username']);
+        //escapes special characters in a string
+        $username = mysqli_real_escape_string($con, $username);
+        $email    = stripslashes($_REQUEST['email']);
+        $email    = mysqli_real_escape_string($con, $email);
+        $password = stripslashes($_REQUEST['password']);
+        $password = mysqli_real_escape_string($con, $password);
+        $create_datetime = date("Y-m-d H:i:s");
+        $query    = "INSERT into `users` (username, password, email, create_datetime)
+                     VALUES ('$username', '" . md5($password) . "', '$email', '$create_datetime')";
+        $result   = mysqli_query($con, $query);
+        if ($result) {
+            echo "<div class='form'>
+                  <h3>You are registered successfully.</h3><br/>
+                  <p class='link'>Click here to <a href='login.php'>Login</a></p>
+                  </div>";
+        } else {
+            echo "<div class='form'>
+                  <h3>Required fields are missing.</h3><br/>
+                  <p class='link'>Click here to <a href='registration.php'>registration</a> again.</p>
+                  </div>";
+        }
+    } else {
+?>
+    <form class="form" action="" method="post">
+        <h1 class="login-title">Registration</h1>
+        <input type="text" class="login-input" name="username" placeholder="Username" required />
+        <input type="text" class="login-input" name="email" placeholder="Email Adress">
+        <input type="password" class="login-input" name="password" placeholder="Password">
+        <input type="submit" name="submit" value="Register" class="login-button">
+        <p class="link"><a href="login.php">Click to Login</a></p>
+    </form>
+<?php
+    }
+?>
+</body>
+</html>
+
+
+
+
+
+Creating a Login Form
+=======================
+
+Similarly, create a PHP file login.php and put the following example code in it. This file code contains a form that allows users to enter username and password.
+
+login.php
+============
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<?php
+    require('db.php');
+    session_start();
+    // When form submitted, check and create user session.
+    if (isset($_POST['username'])) {
+        $username = stripslashes($_REQUEST['username']);    // removes backslashes
+        $username = mysqli_real_escape_string($con, $username);
+        $password = stripslashes($_REQUEST['password']);
+        $password = mysqli_real_escape_string($con, $password);
+        // Check user is exist in the database
+        $query    = "SELECT * FROM `users` WHERE username='$username'
+                     AND password='" . md5($password) . "'";
+        $result = mysqli_query($con, $query) or die(mysql_error());
+        $rows = mysqli_num_rows($result);
+        if ($rows == 1) {
+            $_SESSION['username'] = $username;
+            // Redirect to user dashboard page
+            header("Location: dashboard.php");
+        } else {
+            echo "<div class='form'>
+                  <h3>Incorrect Username/password.</h3><br/>
+                  <p class='link'>Click here to <a href='login.php'>Login</a> again.</p>
+                  </div>";
+        }
+    } else {
+?>
+    <form class="form" method="post" name="login">
+        <h1 class="login-title">Login</h1>
+        <input type="text" class="login-input" name="username" placeholder="Username" autofocus="true"/>
+        <input type="password" class="login-input" name="password" placeholder="Password"/>
+        <input type="submit" value="Login" name="submit" class="login-button"/>
+        <p class="link"><a href="registration.php">New Registration</a></p>
+  </form>
+<?php
+    }
+?>
+</body>
+</html>
+
+
+Making a Dashboard Page
+=========================
+
+Once user login we will redirect to the user dashboard page. Create a PHP file named dashboard.php and paste the below code in it.
+
+
+dashboard.php
+==================
+
+<?php
+//include auth_session.php file on all user panel pages
+include("auth_session.php");
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard - Client area</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="form">
+        <p>Hey, <?php echo $_SESSION['username']; ?>!</p>
+        <p>You are now user dashboard page.</p>
+        <p><a href="logout.php">Logout</a></p>
+    </div>
+</body>
+</html>
+
+
+
+
+Similarly, you can create another secure page. Only you need to add the below code first in your PHP file.
+
+<?php
+require('db.php');
+include("auth_session.php");
+?>
+
+
+
+
+
+Create a Logout (Destroy session)
+=======================================
+
+When clicking on the logout button we have to destroy user sessions. It will redirect to the login page. Thus, create a file named logout.php and add the below code.
+
+logout.php
+====================
+
+<?php
+    session_start();
+    // Destroy session
+    if(session_destroy()) {
+        // Redirecting To Home Page
+        header("Location: login.php");
+    }
+?>
+
+
+
+
+CSS File Create
+==========================
+
+Finally, important step for a user experience perspective. Create CSS file style.css and put the below code.
+
+style.php
+===================
+
+body {
+    background: #3e4144;
+}
+.form {
+    margin: 50px auto;
+    width: 300px;
+    padding: 30px 25px;
+    background: white;
+}
+h1.login-title {
+    color: #666;
+    margin: 0px auto 25px;
+    font-size: 25px;
+    font-weight: 300;
+    text-align: center;
+}
+.login-input {
+    font-size: 15px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 25px;
+    height: 25px;
+    width: calc(100% - 23px);
+}
+.login-input:focus {
+    border-color:#6e8095;
+    outline: none;
+}
+.login-button {
+    color: #fff;
+    background: #55a1ff;
+    border: 0;
+    outline: 0;
+    width: 100%;
+    height: 50px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+.link {
+    color: #666;
+    font-size: 15px;
+    text-align: center;
+    margin-bottom: 0px;
+}
+.link a {
+    color: #666;
+}
+h3 {
+    font-weight: normal;
+    text-align: center;
+}

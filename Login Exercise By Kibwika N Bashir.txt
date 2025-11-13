@@ -1,0 +1,460 @@
+Table of Contents
+==================
+Prerequisites to Create the Login ModuleEnvironment SetupHow to Create a Modal Login Form?
+
+Step 1- Create a HTML PHP Login Form
+
+Step 2: Create a CSS Code for Website Design View More
+
+Step 3: Create a Database Table Using MySQL
+
+Step 4: Open a Connection to a MySQL Database
+
+Step 5 - Create a Logout Session
+
+Step 6 - Create a Code for the Home Page
+
+How to Run the Login Form?
+
+Create a Password Reset Feature
+
+Common ErrorsConclusion
+
+In today's digital age, the importance of online security cannot be ignored. As a result, creating a login form is an essential feature for any website that requires user authentication. 
+
+The following is a guide on creating a login form in PHP. But first, let us discuss the intricacies of creating a login form in PHP, including some of the errors that might occur during the process.
+
+A login form is an essential website feature requiring user authentication. It allows users to access their accounts by entering their username and password. 
+
+It is ideal for creating login forms as it provides various security features and is easy to use. While many cyber security threats are posing a danger, it helps a lot to add this feature to your website.
+
+PHP is a server-side scripting programming language, and MySQL is an open-source relational database management system. These two frameworks, when used together, are capable of providing highly unique solutions, like creating a login form. 
+
+
+In this class, we will look at a simple login system using PHP and MySQL.
+
+Before getting started with the code-related aspects of PHP, let’s have a look at the prerequisites to create a login form.
+
+Prerequisites:
+
+=> Knowledge of HTML, CSS, PHP, and MySQL
+
+=> Microsoft Visual Studio (For writing the code)
+
+=> Installation of XAMPP
+
+
+
+Prerequisites:
+
+Knowledge of HTML, CSS, PHP, and MySQL
+Microsoft VStudio code (For writing the code)
+
+Installation of XAMPP
+
+Prerequisites to Create the Login Module
+==========================================
+
+Before we dive into creating a login form in PHP, you need some PHP programming knowledge. First, let us see how to create a login form in PHP. It would help if you had a basic understanding of HTML and CSS to create a visually appealing form. Additionally, you will require a server to run your PHP code. You can use XAMPP, WAMP, or MAMP, which depends on your operating system, to set up a local server on your computer.
+
+
+Environment Setup
+====================
+
+After installing your server software, you must create a new folder inside the server's root directory and name it according to your project. Then, inside the project folder, create a new file named "index.php." This file will hold the login form code.
+
+
+How to Create a Modal Login Form?
+===================================
+
+We will now create a basic modal login form with two input fields for the username and password. The form will also have a submit button to send the data to the server for authentication. 
+
+First, we must create an HTML form containing the input fields and submit button. 
+
+
+
+
+For example: 
+
+<!-- The Modal -->
+
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+
+  <div class="modal-content">
+
+    <span class="close">&times;</span>
+
+    <form>
+
+      <label for="email">Email Address</label>
+
+      <input type="email" id="email" name="email" required>
+
+      <label for="password">Password</label>
+
+      <input type="password" id="password" name="password" required>
+
+      <input type="submit" value="Login">
+
+    </form>
+
+  </div>
+
+</div>
+
+```
+
+This code creates a modal login form with two input fields for the username and password. The form will send data to the "login.php" file using the post method when the user clicks the login button.
+
+Next, we must form the "login.php" file to handle the form submission and authenticate the user. This file will check if the entered username and password match the ones stored in the database and redirect the user accordingly.
+
+
+
+=> Step 1- Create a HTML PHP Login Form
+=========================================
+
+To create a login form, follow the steps mentioned below:
+
+Open Microsoft Visual Studio -> create a new file and name it as an SL file
+
+Now, on a page, write the code mentioned in the example below
+The HTML program will create a webpage form that will allow users to log in themselves
+The code consists of HTML elements. The basic elements are:
+
+<title>
+
+The element displays the heading of the document. The label can be only in the text format, and it shows the text in the browser's tab.
+
+<link> 
+
+It creates a link between the working document and an external resource.
+
+<form> 
+
+The element defines the user input included while creating an HTML. 
+
+<input type>
+
+It displays a one-line input field.
+
+<label>
+
+It defines a label for many form elements. It majorly indicates the radio button/checkbox.
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LOGIN</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+     <form action="login.php" method="post">
+        <h2>LOGIN</h2>
+        <?php if (isset($_GET['error'])) { ?>
+            <p class="error"><?php echo $_GET['error']; ?></p>
+        <?php } ?>
+        <label>User Name</label>
+        <input type="text" name="uname" placeholder="User Name"><br>
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Password"><br> 
+        <button type="submit">Login</button>
+     </form>
+</body>
+</html>
+
+
+
+=> Step 2: Create a CSS Code for Website Design
+==============================================
+ 
+Next comes the CSS sheet. Now, the aim is to create a cascading style sheet (CSS) file to improve the design of the webpage.
+
+The code for the .css file is below:
+
+body {
+    background: #91a716;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+*{
+    font-family: cursive;
+    box-sizing: padding-box;
+}
+
+form {
+    width: 1000px;
+    border: 3px solid rgb(177, 142, 142);
+    padding: 20px;
+    background: rgb(85, 54, 54);
+    border-radius: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+input {
+    display: block;
+    border: 2px solid #ccc;
+    width: 95%;
+    padding: 10px;
+    margin: 10px auto;
+    border-radius: 5px;
+}
+
+label {
+    color: #888;
+    font-size: 18px;
+    padding: 10px;
+}
+
+button {
+    float: right;
+    background: rgb(35, 174, 202);
+    padding: 10px 15px;
+    color: #fff;
+    border-radius: 5px;
+    margin-right: 10px;
+    border: none;
+}
+
+button:hover{
+    opacity: .10;
+}
+
+.error {
+   background: #F2DEDE;
+   color: #0c0101;
+   padding: 10px;
+   width: 95%;
+   border-radius: 5px;
+   margin: 20px auto;
+}
+
+h1 {
+    text-align: center;
+    color: rgb(134, 3, 3);
+}
+
+a {
+    float: right;
+    background: rgb(183, 225, 233);
+    padding: 10px 15px;
+    color: #fff;
+    border-radius: 10px;
+    margin-right: 10px;
+    border: none;
+    text-decoration: none;
+}
+
+a:hover{
+    opacity: .7;
+}
+
+Save the file name as "Style.css"
+
+When the user submits the input values, they will be verified against the credentials stored in the database. Here, if the username and password are matched, the user will be taken to the next webpage. Otherwise, the login attempt will be rejected.
+
+Now, to log in, it is important to add the credentials to the database.
+
+
+
+
+Step 3: Create a Database Table Using MySQL
+When you create a database, you're creating a structure like this:
+
+	id 	user_name	password	name
+	1	nasser		Kibwika@123	kibwika
+	2	ross		Rachel@123	rose
+		
+
+Now, start your SQL Xampp server and select admin. This will direct you to the phpMyAdmin webpage. Now, log in with your username and password.
+
+Now, on the MyPHPAdmin, create a new database by clicking "New" on the left-hand side of a webpage.
+
+
+
+
+Step 4: Open a Connection to a MySQL Database
+===============================================
+
+Once you create a PHPMyAdmin database, your next step is to write a code on VStudio Code.
+
+Go to Microsoft visual code -> create a new file and name it as DB connection.
+
+Now, in the code below, you will notice the function mysqli_connect( ). As the name suggests, it does the same task. It connects the database to the form that was created.
+
+
+<?php
+$sname= "localhost";
+$unmae= "root";
+$password = "";
+$db_name = "test_db";
+$conn = mysqli_connect($sname, $unmae, $password, $db_name);
+if (!$conn) {
+    echo "Connection failed!";
+}
+
+
+This demo has used an if statement to check whether the code is working or not. A suitable message is printed, depending on if the database was found. 
+
+Now, execute the below SQL query to create the user table within your MySQL database.
+
+<?php 
+session_start(); 
+include "db_conn.php";
+if (isset($_POST['uname']) && isset($_POST['password'])) {
+    function validate($data){
+       $data = trim($data);
+       $data = stripslashes($data);
+       $data = htmlspecialchars($data);
+       return $data;
+    }
+    $uname = validate($_POST['uname']);
+    $pass = validate($_POST['password']);
+    if (empty($uname)) {
+        header("Location: index.php?error=User Name is required");
+        exit();
+    }else if(empty($pass)){
+        header("Location: index.php?error=Password is required");
+        exit();
+    }else{
+        $sql = "SELECT * FROM users WHERE user_name='$uname' AND password='$pass'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) === 1) {
+            $row = mysqli_fetch_assoc($result);
+            if ($row['user_name'] === $uname && $row['password'] === $pass) {
+                echo "Logged in!";
+                $_SESSION['user_name'] = $row['user_name'];
+                $_SESSION['name'] = $row['name'];
+                $_SESSION['id'] = $row['id'];
+                header("Location: home.php");
+                exit();
+            }else{
+                header("Location: index.php?error=Incorect User name or password");
+                exit();
+            }
+        }else{
+            header("Location: index.php?error=Incorect User name or password");
+            exit();
+        }
+    }
+}else{
+    header("Location: index.php");
+    exit();
+}
+
+Now, if you log in using the wrong credentials, you will get the following output
+
+
+
+
+Step 5 - Create a Logout Session
+=======================================
+
+In this section, you will create a "logout.php" file. 
+
+When a user selects the logout option, the code mentioned below will automatically redirect the user back to the login page.
+
+<?php 
+session_start();
+session_unset();
+session_destroy();
+header("Location: index.php");
+
+
+
+
+Step 6 - Create a Code for the Home Page
+Next, this tutorial will show you how to get back to the home page. 
+
+The code for the home page is:
+
+<?php 
+session_start();
+if (isset($_SESSION['id']) && isset($_SESSION['user_name'])) {
+ ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HOME</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+     <h1>Hello, <?php echo $_SESSION['name']; ?></h1>
+     <a href="logout.php">Logout</a>
+</body>
+</html>
+<?php 
+}else{
+     header("Location: index.php");
+     exit();
+}
+?>
+
+
+
+
+How to Run the Login Form?
+==============================
+
+To run the login form, you need to save the index.php and login.php files in the root directory of your server. After that, start your server and open the browser. Next, enter the server's URL in the address bar and press enter. After that, the login form will appear on the screen, and you enter the username and password and click the login button. The server will redirect the user to the home page if the credentials match. Otherwise, the server will surely show an error message.
+
+
+
+
+Create a Password Reset Feature
+===================================
+
+A password reset feature is an essential aspect of any login form. Users can reset their password using their email address if they forget it. Here is how to create a password reset feature:
+
+Create a "forgot-password.php" file containing a form for the user to enter their email address.
+
+After submitting the form, the server will check if the entered email address exists in the database. If yes, the server will send a password reset link to the user's email address.
+
+The email will contain a password reset link that will redirect users to a page where they can enter and confirm their new password.
+
+
+Common Errors
+===================
+
+Creating a login form in PHP can be challenging. You are likely to encounter some errors along the way. Here are some of the most common errors and how to solve them:
+
+Errors Due to Incorrect Variable Names
+
+In PHP, variables are case-sensitive. Thus, if you use the wrong variable name, the server will not recognize it, and you will get an error. To solve this Error, ensure that the variable names used in your code match those used in the database.
+
+The "Headers already sent" Error.
+
+This Error occurs when PHP sends the output to the browser before sending the headers. To solve this Error, ensure there is no output before sending the headers.
+
+Session Variables Not Persisting Across Pages
+
+This Error occurs when session variables do not persist across pages. To solve this Error, ensure that you start the session at the beginning of each page and use the same session name throughout the application.
+
+
+
+FAQs
+=================
+
+1. How to Create a Login Form in PHP Without a Database?
+
+It is possible to create a login form in PHP without a database. You can store the user credentials in a flat or CSV file. However, this method is not recommended for security reasons, as it is easy for hackers to access and modify the data.
+
+2. What do you mean by $_ GET and $_ POST in PHP?
+
+$_GET and $_POST are PHP superglobals that retrieve data from HTML forms. $_GET retrieves data from the URL, while $_POST retrieves data from the HTTP POST method. It is a safe way to get back the data lost.
+
+3. What is the main Difference Between $_ Request and $_ POST?
+
+There is a certain difference between $_REQUEST and $_POST.
+
+$_REQUEST is a PHP superglobal that retrieves data from both the URL and HTTP POST methods, while $_POST retrieves data from the HTTP POST method only.
